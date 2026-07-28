@@ -10,12 +10,44 @@ import tensorflow as tf
 # ==========================================================
 # Load the Scaler and TensorFlow Model
 # ==========================================================
+
+import traceback
+
+scaler = None
+deployed_nn = None
+
 try:
-    scaler = joblib.load('breast_cancer_model.pkl')
-    deployed_nn = tf.keras.models.load_model('breast_cancer_model.h5')
-    print("Scaler and Deep Learning Model loaded successfully!")
-except Exception as e:
-    print(f"Warning: Files not found or error loading. {e}")
+    print("=" * 60)
+    print("Checking repository files...")
+
+    print("Current directory:", os.getcwd())
+    print("Files present:", os.listdir())
+
+    print("\nLoading PKL file...")
+
+    scaler = joblib.load("breast_cancer_model.pkl")
+
+    print("PKL loaded successfully!")
+    print("Object Type:", type(scaler))
+    print("Object:", scaler)
+
+    print("\nLoading H5 model...")
+
+    deployed_nn = tf.keras.models.load_model(
+        "breast_cancer_model.h5",
+        compile=False
+    )
+
+    print("H5 Model loaded successfully!")
+
+    print("=" * 60)
+
+except Exception:
+    print("=" * 60)
+    print("MODEL LOADING ERROR")
+    print(traceback.format_exc())
+    print("=" * 60)
+
     scaler = None
     deployed_nn = None
 
